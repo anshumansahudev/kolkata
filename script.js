@@ -20,6 +20,7 @@ const PLACE_ALIASES = {
   'pubali apartment': 'Aswini Nagar Post Office, Rajarhat, Kolkata, West Bengal 700159',
   'alcove triveni mall': 'Alcove Triveni Mall, Serampore, West Bengal',
   'fiem': '22.4433497,88.4154285', // Future Institute of Engineering and Management
+  'fiem college': '22.4433497,88.4154285',
   'victorial memorial': 'Victoria Memorial, Kolkata',
   'old kolkata streets': '24 Zakaria Street, Kolutola, Kolkata, West Bengal 700073'
 };
@@ -29,12 +30,20 @@ function resolvePlace(name) {
   return PLACE_ALIASES[key] || `${name.trim()}, ${DEFAULT_CITY}`;
 }
  
-/** Pick a Google Maps travel mode from the card's description text */
+/**
+ * Pick a Google Maps travel mode from the card's description.
+ * Only the FIRST sentence is used, since that's where the main ride is named
+ * ("... by cab."); later sentences often mention other things
+ * (e.g. "Board the return train", "Evening walk") that aren't the route.
+ */
 function detectTravelMode(text) {
-  const t = text.toLowerCase();
-  if (/\b(train|metro)\b/.test(t)) return 'transit';
-  if (/\bwalk(ing)?\b/.test(t) && !/\b(cab|auto)\b/.test(t)) return 'walking';
-  return 'driving';
+  const first = text
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^approx\.?\s*/i, '')
+    .split(/\.\s/)[0]
+    .toLowerCase();
+  return /\b(train|metro)\b/.test(first) ? 'transit' : 'driving';
 }
  
 function buildRouteUrl(origin, destination, mode) {
