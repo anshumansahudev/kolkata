@@ -1,0 +1,404 @@
+/* ==========================================================================
+   Company Timeline - Design & Responsive Styles
+   ========================================================================== */
+ 
+:root {
+  --primary: #2563eb;
+  --primary-light: #93c5fd;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --bg-color: #f8fafc;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 12px 28px -4px rgba(0, 0, 0, 0.08), 0 6px 12px -4px rgba(0, 0, 0, 0.03);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+ 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+ 
+.timeline-section {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+ 
+/* ==========================================================================
+   Header with Watermark & Accent Pill
+   ========================================================================== */
+ 
+.timeline-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 20px 0;
+}
+ 
+/* Large faded 'TIMELINE' watermark in the background */
+.watermark-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -68%);
+  font-size: clamp(3.5rem, 9vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #edf2f7;
+  opacity: 0.85;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
+}
+ 
+.timeline-title {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--text-dark);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+}
+ 
+.timeline-title .highlight {
+  color: var(--primary);
+  display: inline-block;
+}
+ 
+/* Rounded blue underline bar */
+.underline-pill {
+  display: block;
+  width: 44px;
+  height: 4px;
+  background-color: var(--primary);
+  border-radius: 9999px;
+  margin-top: 6px;
+}
+ 
+.timeline-subtitle {
+  position: relative;
+  z-index: 2;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+ 
+/* ==========================================================================
+   Timeline Structure
+   ========================================================================== */
+ 
+.timeline-container {
+  position: relative;
+  padding: 10px 0 20px 0;
+}
+ 
+/* Continuous vertical light blue line */
+.timeline-spine {
+  position: absolute;
+  /* Aligned with center of the 40px node: 140px date + 20px gap + 20px half node = 180px */
+  left: 180px;
+  top: 15px;
+  bottom: 25px;
+  width: 2px;
+  background-color: var(--primary-light);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+ 
+/* Item row */
+.timeline-item {
+  display: grid;
+  grid-template-columns: 140px 40px 1fr;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 2;
+}
+ 
+/* Date on the left */
+.timeline-date {
+  text-align: right;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #475569;
+  padding-top: 9px; /* Aligns vertically with center of node */
+  letter-spacing: -0.01em;
+  transition: var(--transition);
+}
+ 
+.timeline-time {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--primary);
+  white-space: nowrap;
+}
+ 
+/* Center circular node */
+.timeline-node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+}
+ 
+.icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 2px solid #60a5fa;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 4px var(--bg-color);
+  transition: var(--transition);
+}
+ 
+/* Content card on the right */
+.timeline-card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 22px 28px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+ 
+/* Speech-bubble arrow pointing to the circle */
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  top: 13px;
+  left: -8px;
+  width: 14px;
+  height: 14px;
+  background: var(--card-bg);
+  border-left: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  transform: rotate(45deg);
+  transition: var(--transition);
+}
+ 
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+  transition: var(--transition);
+}
+ 
+.card-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+ 
+.timeline-closing {
+  margin-top: 34px;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+ 
+/* ==========================================================================
+   Hover Effects
+   ========================================================================== */
+ 
+.timeline-item:hover .icon-wrapper {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  transform: scale(1.12);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35), 0 0 0 4px var(--bg-color);
+}
+ 
+.timeline-item:hover .timeline-card {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
+}
+ 
+.timeline-item:hover .timeline-date {
+  color: var(--primary);
+}
+ 
+.timeline-item:hover .card-title {
+  color: var(--primary);
+}
+ 
+/* ==========================================================================
+   Google Maps "View Route" Button
+   ========================================================================== */
+ 
+.route-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: #eff6ff;
+  border: 1px solid var(--primary-light);
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+ 
+.route-btn:hover,
+.route-btn:focus-visible {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  outline: none;
+}
+ 
+/* ==========================================================================
+   Day Navigation Buttons
+   ========================================================================== */
+ 
+.day-nav {
+  position: sticky;
+  top: 12px;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: -20px auto 40px;
+  padding: 6px 4px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+ 
+.day-nav::-webkit-scrollbar {
+  display: none;
+}
+ 
+.day-btn {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 16px;
+  font-family: inherit;
+  color: var(--text-muted);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+ 
+.day-btn-num {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+ 
+.day-btn-date {
+  font-size: 0.68rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+ 
+.day-btn:hover {
+  color: var(--primary);
+  border-color: var(--primary-light);
+  transform: translateY(-1px);
+}
+ 
+.day-btn.active {
+  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+ 
+.day-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+ 
+/* ==========================================================================
+   Responsive Design for Mobile
+   ========================================================================== */
+ 
+@media (max-width: 640px) {
+  .day-nav {
+    justify-content: flex-start;
+    margin-top: -30px;
+  }
+ 
+  .watermark-text {
+    display: none;
+  }
+ 
+  .timeline-spine {
+    left: 20px;
+  }
+ 
+  .timeline-item {
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+ 
+  .timeline-date {
+    grid-column: 2;
+    text-align: left;
+    padding-top: 0;
+    margin-bottom: -4px;
+    font-size: 0.85rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+ 
+  .timeline-time {
+    margin-top: 3px;
+    font-size: 0.72rem;
+  }
+ 
+  .timeline-node {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    padding-top: 4px;
+  }
+ 
+  .timeline-card {
+    grid-column: 2;
+    padding: 18px 20px;
+  }
+ 
+  .timeline-card::before {
+    top: 15px;
+  }
+}
